@@ -9,6 +9,8 @@ from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify
 
+from flask import request, render_template
+
 engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
 Base = automap_base()
@@ -16,6 +18,8 @@ Base.prepare(engine, reflect=True)
 
 Measurements = Base.classes.measurement
 Stations = Base.classes.station
+
+session = Session(engine)
 
 app = Flask(__name__)
 
@@ -31,15 +35,14 @@ def HomePage():
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations</br>"
         f"/api/v1.0/tobs</br>"
-        f"/api/v1.0/<start></br>"
-        f"/api/v1.0/<start>/<end></br>"
+        f"/api/v1.0/start_date</br>"
+        f"/api/v1.0/start_end_date</br>"
     )
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     """Return the JSON representation of Precipitation Dictionary"""
 
-    session = Session(engine)
     results = session.query(Measurements.id, Measurements.station, Measurements.date, Measurements.prcp, Measurements.tobs).\
     order_by(Measurements.date.desc()).all()
 
@@ -60,14 +63,12 @@ def precipitation():
         precip_dict.update({date:temp})
 
     session.close()    
-
     return jsonify(precip_dict)
 
 @app.route("/api/v1.0/stations")
 def stations():
     """Return the JSON list of stations from the dataset"""
 
-    session = Session(engine)
     results = session.query(Stations.station).all()
     stations_list = list(np.ravel(results))
 
@@ -77,7 +78,7 @@ def stations():
 @app.route("/api/v1.0/tobs")
 def tobs():
     """Return the JSON list of temperature observations"""
-    session = Session(engine)
+    
     results = session.query(Measurements.date, Measurements.station, Measurements.tobs).\
         order_by(Measurements.date.desc()).all()
    
@@ -103,22 +104,55 @@ def tobs():
     tobs_list = []
     for temp in temps:
         tobs_list.append(temp[2])
-    
+
+    session.close()
     return jsonify(tobs_list)
 
-@app.route("/api/v1.0/<start>")
+@app.route("/api/v1.0/start_date")
 def start():
-    """Return JSON dictionary of min, max, avg temps for all dates greater than start date"""
-    return jsonify(start_temps_dict)
+    
+    """Return JSON dictionary of min, max, avg temps for all dates equal to start date"""
+    start_date = datetime.datetime.strptime('2017-07-04', '%Y-%m-%d').date()
+    
+    sel = [Measurements.date, func.max(Measurements.tobs), func.min(Measurements.tobs), func.avg(Measurements.tobs)]
+    temps = session.query(*sel).\
+    filter(Measurements.date == start_date).all()    
+       
+    for a,b,c,d in temps:
+        m_date = a
+        max = b
+        min = c
+        avg = d
 
-@app.route("/api/v1.0/<start>/<end>")
+    start_dict = {'Maximum_Temperature': max, 'Minimum_Temperature': min, 'Average_Temperature': avg}
+
+    session.close()
+    return jsonify(start_dict)
+
+@app.route("/api/v1.0/start_end_date")
 def start_end():
     """Return JSON dictionary of min, max & avg temps between start & end dates"""
+    start_date = datetime.datetime.strptime('2016-07-04', '%Y-%m-%d').date()
+    end_date = datetime.datetime.strptime('2017-07-04', '%Y-%m-%d').date()
+    
+    results = session.query(Measurements.date, Measurements.station, Measurements.tobs).\
+        order_by(Measurements.date.desc()).all()
+   
+    sel = [Measurements.date, func.max(Measurements.tobs), func.min(Measurements.tobs), func.avg(Measurements.tobs)]
+    temps = session.query(*sel).\
+    filter(Measurements.date >= start_date).\
+    filter(Measurements.date <= end_date).all()    
+       
+    for a,b,c,d in temps:
+        m_date = a
+        max = b
+        min = c
+        avg = round(d,2)
+
+    inclusive_dict = {'Maximum_Temperature': max, 'Minimum_Temperature': min, 'Average_Temperature': avg}
+
+    session.close()
     return jsonify(inclusive_dict)
-
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
