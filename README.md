@@ -2,7 +2,13 @@
 
 ![surfs-up.png](Resources/surfs-up.png)
 
-Congratulations! You've decided to treat yourself to a long holiday vacation in Honolulu, Hawaii! this research project involved the hawaii.sqlite databse and the two tables - Measurement and Stations. 
+Congratulations! You've decided to treat yourself to a long holiday vacation in Honolulu, Hawaii! 
+
+According to GoVisitHawaii.com Hawaii’s weather is warm all year round with daytime high temperatures ranging from 78F in the “colder” months to 88F in the hotter months. Hawaii’s proximity to the equator means that its weather is tropically warm and consistent throughout the year. Flowers are always in bloom in Hawaii. Typically December, January, and February are the coolest months, while July, August and September are the warmest months. 
+
+Further according to GoVisitHawaii.com, the months of April – October tend to have less rain than the months of November – March. The following chart shows how the average rainfall varies by month and by Hawaiian Island.
+
+This research project involved the hawaii.sqlite databse and the two tables - Measurement and Stations. 
 
 
 ### Objectives
@@ -76,22 +82,25 @@ Using SQLAlchemy ORM queries, Pandas and Matplotlib, we were challenged to compl
   * Return a JSONified dictionary of these minimum, maximum, and average temperatures.
 
 ### Analysis
-Dataset contains 9 stations and daily temperature readings from 1/1/2010 to 8/23/2017.
-Based on the Precipitation Analysis for August 2016 to August 2017, October to January, April and June to July may be a good time to visit.
+Dataset contains 9 stations and daily temperature readings from 1/1/2010 to 8/23/2017. We analyzed precipitation for the year 8/23/16 to 8/23/17. 
 
+While GoVisitHawaii.com indicates that the months of April – October tend to have less rain than the months of November – March, we found spikes in or about February-March; April-May; September; and November.
 
-### Techologies Used
+### Technologies Used
 SQLAlchemy
 Pandas 
 Matplotlib
+Datetime
 
 ### Project Status
 Base project completed.
 
 ### Suggestions to Improve Analysis
-Considering location of the stations using the longitude and latitude contained in the Stations table. 
+1. Compare precipitation from other years.
+2. Identify the location of the weather stations.
+3. Where are the "less active" stations located?
 
 ### Issues
-1. Issue with Visual Studio Code finding Python debugger and Flask. 
+1. Issues with Visual Studio Code finding Python debugger and Flask. 
 
 
