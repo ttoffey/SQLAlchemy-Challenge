@@ -1,6 +1,6 @@
 # SQLAlchemy-Challenge - Surfs Up
 
-![surfs-up.png](Images/surfs-up.png)
+![surfs-up.png](Resources/surfs-up.png)
 
 Congratulations! You've decided to treat yourself to a long holiday vacation in Honolulu, Hawaii! this research project involved the hawaii.sqlite databse and the two tables - Measurement and Stations. 
 
@@ -21,7 +21,7 @@ Using SQLAlchemy ORM queries, Pandas and Matplotlib, we were challenged to compl
    
    4. Plot the results using the DataFrame `plot` method. 
 
-![precipitation](Images/Precipitation.png)
+![precipitation](Resources/Precipitation.png)
 
    5. Use Pandas to print the summary statistics for the precipitation data. 
 
@@ -39,7 +39,7 @@ Using SQLAlchemy ORM queries, Pandas and Matplotlib, we were challenged to compl
 
    6. Plot the results as a histogram with `bins=12`.
 
-![station-histogram](Images/MostActiveStation.png)
+![station-histogram](Resources/MostActiveStation.png)
 
 
 ## Step 2 - Climate App
